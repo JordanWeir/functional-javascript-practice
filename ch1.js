@@ -9,6 +9,10 @@ function record(action, fun) {
   console.log('Result:', fun.apply(null, args),"\n");
 }
 
+// Utility functions to test for existence, and truthiness of values
+function existy(x) { return x != null };
+function truthy(x) { return (x !== false) && existy(x) };
+
 function splat (fun) {
   return function(array) {
     return fun.apply(null, array);
@@ -112,12 +116,26 @@ function naiveSort(arr) {
 // naiveSort doesn't work in a range of cases because .sort() defaults to a string comparison.
 // It can also take a function to decide which value to return.
 // Predicates to the rescue
+// We use a comparator function that takes a predicate function.
+// Using the comparator function, we can map the results of the predicate into a standardized result set
+// -1, 0, and 1.
+function comparator(pred) {
+  return function(x, y) {
+    if (truthy(pred(x, y)))
+      return -1;
+    else if (truthy(pred(y, x)))
+      return 1;
+    else
+      return 0;
+  }
+}
+
 function lessOrEqual(x, y) {
   return x <= y;
 }
 
 function goodSort(arr, pred) {
-  return arr.sort(pred);
+  return arr.sort(comparator(pred));
 }
 
 
@@ -145,4 +163,3 @@ note('Naive sort does a bad job because the default sort function is a string co
 record('goodSort', goodSort, [2,3,-6,-108,42], lessOrEqual);
 record('goodSort', goodSort, [0, -1, -2], lessOrEqual);
 record('goodSort', goodSort, [2, 3, -1, -6, 0, -108, 42, 10], lessOrEqual);
-console.log([2, 3, -1, -6, 0, -108, 42, 10].sort(lessOrEqual));

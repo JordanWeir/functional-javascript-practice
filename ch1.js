@@ -3,9 +3,9 @@ var _ = require('underscore');
 var results = [];
 
 // Utility function to better print to console.
-function record(action, fun) {
-  args = _.rest(arguments, 2);
-  console.log("\n",'RECORD: Begin', action,'with', args);
+function record(funName, fun) {
+  const args = _.rest(arguments, 2);
+  console.log("\n",'RECORD: Begin', funName,'with', args);
   console.log('RESULT:', fun.apply(null, args),"\n");
 }
 
@@ -20,6 +20,26 @@ function doWhen(cond, action) {
   else
     return undefined;
 }
+
+// Using existy, truthy, and doWhen transforms something like this...
+function naiveExecuteIfHasField(target, name) {
+  if (target[name] != null) {
+    var result = target[name];
+    console.log('The result is', result);
+    return result;
+  } else
+    return undefined;
+}
+
+// To something like this...
+function executeIfHasField(target, name) {
+  return doWhen(existy(target[name]), function() {
+    var result = _.result(target, name);
+    console.log(['The result is', result].join(' '));
+    return result;
+  });
+}
+
 
 function splat (fun) {
   return function(array) {
@@ -179,6 +199,14 @@ function selectHairColor(table) {
 
 var mergeResults = _.zip;
 
+function existyMapDemo(arr) {
+  return arr.map(existy);
+}
+
+function truthyMapDemo(arr) {
+  return arr.map(truthy);
+}
+
 
 
 record('addArrayElements', addArrayElements, [1,2]);
@@ -210,3 +238,9 @@ record('selectNames', selectNames, peopleTable);
 record('selectAges', selectAges, peopleTable);
 record('selectHairColor', selectHairColor, peopleTable);
 record('mergeResults', mergeResults, selectNames(peopleTable), selectAges(peopleTable));
+record('naiveExecuteIfHasField', naiveExecuteIfHasField, [1,2,3], 'reverse');
+record('executeIfHasField', executeIfHasField, [1,2,3], 'reverse');
+record('executeIfHasField', executeIfHasField, {foo:42}, 'foo');
+record('executeIfHasField', executeIfHasField, [1,2,3], 'notHere');
+record('existyMapDemo', existyMapDemo, [null, undefined, 1, 2, false]);
+record('truthyMapDemo', truthyMapDemo, [null, undefined, 1, 2, false]);

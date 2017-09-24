@@ -6,12 +6,20 @@ var results = [];
 function record(action, fun) {
   args = _.rest(arguments, 2);
   console.log("\n",'RECORD: Begin', action,'with', args);
-  console.log('Result:', fun.apply(null, args),"\n");
+  console.log('RESULT:', fun.apply(null, args),"\n");
 }
 
 // Utility functions to test for existence, and truthiness of values
 function existy(x) { return x != null };
 function truthy(x) { return (x !== false) && existy(x) };
+
+// Utility function to do something only when some condition is true according to truthy
+function doWhen(cond, action) {
+  if(truthy(cond))
+    return action();
+  else
+    return undefined;
+}
 
 function splat (fun) {
   return function(array) {
@@ -138,6 +146,39 @@ function goodSort(arr, pred) {
   return arr.sort(comparator(pred));
 }
 
+// Data as Abstraction
+// Both the comparator function before, and the CSV example to follow, are functions that translate one type of data to another.
+
+var demoCSV = "name,age,hair\nMerble,35,red\nBob,64,blonde";
+
+function lameCSV(str) {
+  return _.reduce(str.split("\n"), function(table, row) {
+    table.push(_.map(row.split(","), function(c) { return c.trim() }));
+    return table;
+  }, []);
+};
+
+var peopleTable = lameCSV(demoCSV);
+
+function sortTable(table) {
+  return _.rest(table).sort();
+}
+
+// These select functions use existing array processing functions to provide easy access to simple data types.
+function selectNames(table) {
+  return _.rest(_.map(table, _.first));
+}
+function selectAges(table) {
+  return _.rest(_.map(table, second));
+}
+function selectHairColor(table) {
+  return _.rest(_.map(table, function(row) {
+    return nth(row, 2);
+  }));
+}
+
+var mergeResults = _.zip;
+
 
 
 record('addArrayElements', addArrayElements, [1,2]);
@@ -163,3 +204,9 @@ note('Naive sort does a bad job because the default sort function is a string co
 record('goodSort', goodSort, [2,3,-6,-108,42], lessOrEqual);
 record('goodSort', goodSort, [0, -1, -2], lessOrEqual);
 record('goodSort', goodSort, [2, 3, -1, -6, 0, -108, 42, 10], lessOrEqual);
+record('lameCSV', lameCSV, demoCSV);
+record('sortTable', sortTable, peopleTable);
+record('selectNames', selectNames, peopleTable);
+record('selectAges', selectAges, peopleTable);
+record('selectHairColor', selectHairColor, peopleTable);
+record('mergeResults', mergeResults, selectNames(peopleTable), selectAges(peopleTable));

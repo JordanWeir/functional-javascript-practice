@@ -231,11 +231,14 @@ var booksArray = [
 // _.keys, _.values, and _.pluck can be used to deconstruct objects into arrays.
 
 // record('imperative99Bottles', imperative99Bottles);
+note('FUNCTIONAL PROGRAMMING EXAMPLES.');
 record('lyricSegment', lyricSegment, 9);
 record('song', song, 3, 1, lyricSegment);
 record('generalMap (returnValue)', generalMap, {a: 1, b:2}, returnValue);
 record('generalMap (returnKeyValue)', generalMap, {a: 1, b:2}, returnKeyValue);
 record('generalMap (returnKeyValueCollection)', generalMap, {a: 1, b:2}, returnKeyValueCollection);
+
+note('BUILT IN APPLICATIVE FUNCTIONS.');
 record('_.reduce', _.reduce, [100, 2, 25], div);
 record('_.reduceRight', _.reduceRight, [100, 2, 25], div);
 record('allOf', allOf);
@@ -253,10 +256,14 @@ record('_.any with _.isString', _.any, [1, 2, 3, 4], _.isString);
 record('_.sortBy', _.sortBy, people, getAge);
 record('_.groupBy', _.groupBy, albums, getGenre);
 record('_.countBy', _.countBy, albums, getGenre);
+
+note('BUILDING APPLCIATIVE FUNCTIONS.');
 record('cat', cat, [1, 2, 3], [2, 3], [3]);
 record('construct', construct, 57, [2, 3], [3]);
 record('mapCat', mapCat, construct, [57, [2, 3], [3]]);
 record('interpose', interpose, ", ", [1, 2, 3]);
+
+note('DATA THINKING.');
 note('_.keys, _.values, and _.pluck can be used to deconstruct objects into arrays.');
 record('_.keys', _.keys, zombie);
 record('_.values', _.values, zombie);

@@ -152,5 +152,5 @@ function hasKeys() {
 }
 
 // ********
-// Chapter 5: Function-Building Functions
+// Chapter 5: The essence of functional composition
 // ********

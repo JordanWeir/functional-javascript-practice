@@ -1,0 +1,16 @@
+Topics to cover for functional programming.
+
+
+partial application, currying(?) (ch 2)
+Closures (ch 3)
+Hiding data in objects with closures (ch3, ch4 - see omgenerator in ch4)
+intro: Functions passing functions (ch 4)
+Guarding against non-existence: fnull (ch 4)
+Object Validators (ch 4)
+Predicate functions (ch 4)
+Combinators (ch 5)
+
+
+Problems with modifying world state (ch 7)
+Dangers of mutating variables (ch 7)
+Hiding mutation (ch 7, using _.chain?)

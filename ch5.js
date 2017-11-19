@@ -152,5 +152,30 @@ function hasKeys() {
 }
 
 // ********
-// Chapter 5: The essence of functional composition
+// Chapter 5: Function-Building Functions
 // ********
+
+// A polymorphic function exhibits different behavior based on their arguments.
+// Invoker, defined at the end of ch4, returns undefined if the method isn't available on the target object.
+// Let's create a function that tries to call a number of functions, returning the value of the first one that isn't undefined.
+
+function dispatch(/* funs */) {
+    var funs = _.toArray(arguments);
+    var size = funs.length;
+
+    return function(target /*, args */) {
+        var ret = undefined;
+        var args = _.rest(arguments);
+
+        for (var funIndex = 0; funIndex < size; funIndex++) {
+            var fun = funs[funIndex];
+            ret = fun.apply(fun, construct(target, args));
+
+            if (existy(ret)) return ret;
+        }
+
+        return ret;
+    }
+}
+
+
